@@ -30,7 +30,7 @@ def unknown_error(msg, num=-1, crit=True):
 
 
 def warning(msg):
-    if get_bool_flag("ALERTS"): console.print(f'[LIGHT_YELLOW]WARNING[/] : [MAGENTA]{msg}[/]')
+    if not get_bool_flag("DISABLE_ALERTS"): console.print(f'[bold yellow]WARNING[/] : [magenta]{msg}[/]')
 
 
 class Error:
