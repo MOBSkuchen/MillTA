@@ -72,7 +72,7 @@ class Error:
         MSG = self._mk_message()
         MSG = self._mk_causes(MSG)
         MSG = self._mk_solutions(MSG)
-        return MSG
+        return MSG[:-1]
 
     def __call__(self, *args, **kwargs):
         console.print(self.format())
