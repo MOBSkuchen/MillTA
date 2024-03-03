@@ -52,7 +52,7 @@ class Flag:
             return f'[--{self.name} / -{self.mini}]'
 
     def __call__(self, value=None):
-        if isinstance(value, str):
+        if isinstance(self.triggers, str):
             if value:
                 set_flag(self.triggers, value)
             else:
