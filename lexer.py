@@ -91,6 +91,7 @@ class PLexer(Lexer):
     MOD = r'%'
     COLON = r':'
     SEMI_COLON = r';'
+    COMMA = r','
 
     @_(r'#.*')
     def COMMENT(self, t):
