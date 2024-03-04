@@ -80,19 +80,12 @@ class Error:
             sys_exit(self.num)
 
 
-def readlines(f):
-    for i in f.readlines():
-        if i.endswith("\n"):
-            i = i#[:-1]
-        yield i
-
-
 class CodeSnippet:
     def __init__(self, code: io.FileIO, line: int, start: int, end: int) -> None:
         self.code = code
         self.code.seek(0)
         self.line = line - 1
-        self.lines = list(readlines(self.code))
+        self.lines = self.code.readlines()
         self.acc = self._acc(self.lines[:self.line])
         self.start = start - self.acc
         self.end = end - self.acc
@@ -111,7 +104,7 @@ class CodeSnippet:
         if self.line - 1 > -1:
             x.append((f'[dim]{self.line - 1} | [/]' + self.lines[self.line - 1]).replace("\n", ""))
         x.append((f'[bold]{self.line}[/] | ' + "[on yellow]" + self.f_line[:self.start] + "[bold on red]" +
-                 self.snippet + "[/]" + self.f_line[self.end:] + "[/]").replace("\n", ""))
+                  self.snippet + "[/]" + self.f_line[self.end:] + "[/]").replace("\n", ""))
         if not (self.line + 1 > len(self.lines) - 1):
             x.append((f'[dim]{self.line + 1} | [/]' + self.lines[self.line + 1] + "").replace("\n", ""))
         x.append("-----------------------")
