@@ -4,7 +4,7 @@ class ASTNode:
         self.pos = pos
 
     def __repr__(self):
-        return f'{self.name} (at {self.pos})'
+        return f'{self.name}'
 
 
 class ValueNode(ASTNode):
@@ -13,17 +13,23 @@ class ValueNode(ASTNode):
         super().__init__(name, pos)
 
     def __repr__(self):
-        return f'{self.name} : {self.value} (at {self.pos})'
+        return f'{self.name} : {self.value}'
 
 
 class NameNode(ValueNode):
     def __init__(self, value, pos):
         super().__init__("Name", value, pos)
 
+    def __repr__(self):
+        return self.value
+
 
 class ReturnNode(ValueNode):
     def __init__(self, value, pos):
         super().__init__("Return", value, pos)
+
+    def __repr__(self):
+        return f'return {self.value}'
 
 
 class DataNode(ValueNode):
@@ -32,7 +38,7 @@ class DataNode(ValueNode):
         super().__init__("Data", value, pos)
 
     def __repr__(self):
-        return f'{self.name} ({self.typ}) : {self.value} (at {self.pos})'
+        return f'{self.value}: {self.typ}'
 
 
 class ExpressionNode(ASTNode):
@@ -43,7 +49,7 @@ class ExpressionNode(ASTNode):
         super().__init__("Expression", pos)
 
     def __repr__(self):
-        return f'{self.lhs} {self.op} {self.rhs} (at {self.pos})'
+        return f'{self.lhs} {self.op} {self.rhs}'
 
 
 class AssignmentNode(ASTNode):
@@ -51,10 +57,10 @@ class AssignmentNode(ASTNode):
         self.name = name
         self.value = value
         self.typ = typ
-        super().__init__("Assignment", pos)
+        super().__init__(name, pos)
 
     def __repr__(self):
-        return f'{self.name} : {self.typ} = {self.value} (at {self.pos})'
+        return f'{self.name}: {self.typ} = {self.value}'
 
 
 class FuncCallNode(ASTNode):
@@ -64,7 +70,7 @@ class FuncCallNode(ASTNode):
         super().__init__(name, pos)
 
     def __repr__(self):
-        return f'{self.name}({", ".join(self.params)}) at {self.pos}'
+        return f'{self.name}({", ".join(map(repr, self.params))}'
 
 
 class FuncDefNode(ASTNode):
@@ -75,4 +81,13 @@ class FuncDefNode(ASTNode):
         super().__init__(name, pos)
 
     def __repr__(self):
-        return f'def {self.name}({", ".join(self.def_params)}) = [...] at {self.pos}'
+        return f'def {self.name}({", ".join(map((lambda x: f'{x[0]}: {x[1]}'), self.def_params))}):\n{"   \n".join(map(repr, self.body))}'
+
+
+class ModuleNode(ASTNode):
+    def __init__(self, body, pos):
+        self.body = body
+        super().__init__("Module", pos)
+
+    def __repr__(self):
+        return "\n".join(map(repr, self.body))
