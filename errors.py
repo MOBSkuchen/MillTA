@@ -121,7 +121,7 @@ class CodeError(Error):
 
     def format(self) -> str:
         MSG = self._mk_message() + "\n"
-        MSG += self.code_snippet.format()
+        MSG += self.code_snippet.format() if self.code_snippet is not None else "No code snippet available"
         MSG = self._mk_causes(MSG)
         MSG = self._mk_solutions(MSG)
         return MSG[:-1]
@@ -176,4 +176,22 @@ class IllegalCharacter(CodeError):
                          causes=["The character could not be decoded by the lexer",
                                  "The character has no associated usage"],
                          solutions=["Remove the character"],
+                         prog_error=False, critical=True)
+
+
+class InvalidToken(CodeError):
+    def __init__(self, code_snippet: CodeSnippet):
+        super().__init__(num=17, code_snippet=code_snippet, name="Invalid token",
+                         message=f"The token '{code_snippet.snippet}' is not valid at this point",
+                         causes=["The parser did not find any matches regarding this token"],
+                         solutions=["Read the documentation and rewrite your code"],
+                         prog_error=False, critical=True)
+
+
+class EmptyFile(CodeError):
+    def __init__(self):
+        super().__init__(num=17, code_snippet=None, name="Empty file",
+                         message=f"Can not parse and empty file",
+                         causes=["The file, which was supposed to be parsed, is empty"],
+                         solutions=["Write something! :)"],
                          prog_error=False, critical=True)
