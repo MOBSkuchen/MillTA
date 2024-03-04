@@ -21,6 +21,11 @@ class NameNode(ValueNode):
         super().__init__("Name", value, pos)
 
 
+class ReturnNode(ValueNode):
+    def __init__(self, value, pos):
+        super().__init__("Return", value, pos)
+
+
 class DataNode(ValueNode):
     def __init__(self, typ, value, pos):
         self.typ = typ
